@@ -1,0 +1,21 @@
+<div class="uk-margin uk-width-2xlarge uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
+  <table class="uk-table">
+    <caption>
+      Castles
+    </caption>
+    <thead>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Author</th>
+    </thead>
+    <tbody class="uk-text-left">
+      {{#each castles}}
+      <tr>
+        <td>{{name}}</td>
+        <td>{{description}}</td>
+        <td>{{author.firstName}} {{author.lastName}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

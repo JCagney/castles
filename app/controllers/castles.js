@@ -1,22 +1,23 @@
+"use strict";
+
 const Castles = {
-    index: {
-      handler: function (request, h) {
-        return h.file('./app/views/main.html');
-      },
+  home: {
+    handler: function (request, h) {
+      return h.view( "home", {
+         title: "Castles",
+         castles: this.castles, 
+     });
     },
+  },
 
-    signup: {
-      handler: function (request, h) {
-        return h.file('./app/views/signup.html');
-      },
+  addCastle: {
+    handler: function (request, h) {
+      let data = request.payload;
+      data.author = this.currentUser;
+      this.castles.push(data);
+      return h.redirect("/home");
     },
+  },
 
-    login: {
-      handler: function (request, h) {
-        return h.file('./app/views/login.html');
-      },
-    },
-    
-  };
-  
+};
   module.exports = Castles;
