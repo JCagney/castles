@@ -14,11 +14,7 @@ const server = Hapi.server({
   host: 'localhost',
 });
 
-server.bind({
-  users: {},
-  castles: [],
-  // currentUser: {},
-});
+require('./app/models/db');
 
 async function init() {
   await server.register(Inert);

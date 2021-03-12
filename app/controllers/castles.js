@@ -1,21 +1,30 @@
 "use strict";
 
+const Castle = require("../models/castle");
+const User = require("../models/user");
+
 const Castles = {
   home: {
-    handler: function (request, h) {
+    handler: async function (request, h) {
+      const castles = await Castle.find().populate("author").lean();
       return h.view( "home", {
          title: "Castles",
-         castles: this.castles, 
+         castles: castles, 
      });
     },
   },
 
   addCastle: {
-    handler: function (request, h) {
+    handler: async function (request, h) {
+      const id = request.auth.credentials.id;
+      const user = await User.findById(id);
       const data = request.payload;
-      var authorEmail = request.auth.credentials.id;
-      data.author = this.users[authorEmail];
-      this.castles.push(data);
+      const newCastle = new Castle({
+        name: data.name,
+        description: data.description,
+        author: user._id
+      });
+      await newCastle.save();
       return h.redirect("/home");
     },
   },
