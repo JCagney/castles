@@ -12,8 +12,9 @@ const Castles = {
 
   addCastle: {
     handler: function (request, h) {
-      let data = request.payload;
-      data.author = this.currentUser;
+      const data = request.payload;
+      var authorEmail = request.auth.credentials.id;
+      data.author = this.users[authorEmail];
       this.castles.push(data);
       return h.redirect("/home");
     },

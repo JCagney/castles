@@ -1,6 +1,6 @@
 <div class="uk-flex uk-flex-center uk-flex-middle uk-grid-small" uk-grid>
-  {{> title-card title="Caisleáin na hÉireann" subTitle="Sign up or log in"}}
-  {{> welcome-menu }}
+  {{> title-card title="Caisleáin na hÉireann" subTitle="Your details..."}}
+  {{> main-menu }}
 </div>
 
 <div class="uk-container uk-margin">
@@ -9,8 +9,10 @@
       <img width="400" src="images/clare-island.jpg" title="Clare Island Castle" pos="bottom" uk-tooltip />
     </div>
     <div class="uk-width-expand@m">
-      <h1 class="uk-heading-small">Castles of Ireland</h1>
-      <p>Browse, edit and add castles</p>
+      <div class="uk-card uk-card-default uk-width-xlarge uk-card-body uk-box-shadow-large">
+        <h3 class="uk-card-title uk-text-center">Your Details: </h3>
+        {{> settings-form}}
+      </div>
     </div>
   </div>
 </div>
