@@ -16,18 +16,22 @@ const Castles = {
 
   addCastle: {
     handler: async function (request, h) {
-      const id = request.auth.credentials.id;
-      const user = await User.findById(id);
-      const data = request.payload;
-      const newCastle = new Castle({
-        name: data.name,
-        description: data.description,
-        author: user._id
-      });
-      await newCastle.save();
-      return h.redirect("/home");
-    },
-  },
+      try {
+        const id = request.auth.credentials.id;
+        const user = await User.findById(id);
+        const data = request.payload;
+        const newCastle = new Castle({
+          name: data.name,
+          description: data.description,
+          author: user._id
+        });
+        await newCastle.save();
+        return h.redirect("/home");
+      } catch (err) {
+        return h.view("main", { errors: [{ message: err.message }] });
+      }
+    }
+  }
 
 };
   module.exports = Castles;
