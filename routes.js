@@ -12,6 +12,7 @@ module.exports = [
     { method: 'GET', path: '/settings', config: Accounts.showSettings },
     { method: 'POST', path: '/settings', config: Accounts.updateSettings },
     { method: 'GET', path: "/home", config: Castles.home },
+    { method: 'GET', path: '/viewcastle/{_id}', config: Castles.viewCastle },
     { method: 'POST', path: "/addcastle", config: Castles.addCastle },
 
     {

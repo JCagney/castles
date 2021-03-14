@@ -1,4 +1,4 @@
-<div class="uk-margin uk-width-2xlarge uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
+<div class="uk-margin uk-width-expand uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
   <form class="uk-form-stacked uk-text-left" action="/addcastle" method="POST">
     <div class="uk-grid uk-grid-stack">
       <div class="uk-width-1-1@m">
@@ -10,9 +10,9 @@
         </div>
         <div class="uk-margin">
          <label class="uk-form-label" for="form-stacked-text">Enter castle description</label>
-          <div class="uk-form-controls">
-            <input class="uk-input" id="form-stacked-text" type="text" name="description" placeholder="Description" />
-          </div>
+          <div class="uk-margin">
+            <textarea class="uk-textarea" rows="4" placeholder="Description" name="description"></textarea>
+        </div>
         </div>
         <div class="uk-margin">
           <button class="submit uk-button uk-button-primary uk-button-large uk-width-1-1">Add Castle</button>

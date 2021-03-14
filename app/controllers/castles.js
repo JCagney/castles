@@ -31,6 +31,17 @@ const Castles = {
         return h.view("main", { errors: [{ message: err.message }] });
       }
     }
+  },
+
+  viewCastle: {
+    handler: async function (request, h) {
+      const id = request.params._id;
+      const castle = await Castle.findById(id).lean();
+      return h.view( "viewcastle", {
+         title: castle.name,
+         description: castle.description,
+     });
+    },
   }
 
 };
