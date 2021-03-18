@@ -13,6 +13,8 @@ module.exports = [
     { method: 'POST', path: '/settings', config: Accounts.updateSettings },
     { method: 'GET', path: "/home", config: Castles.home },
     { method: 'GET', path: '/viewcastle/{_id}', config: Castles.viewCastle },
+    { method: 'POST', path: '/uploadfile/{castleid}', config: Castles.uploadFile },
+    { method: 'GET', path: '/deleteimage/{id}', config: Castles.deleteImage },
     { method: 'POST', path: "/addcastle", config: Castles.addCastle },
 
     {

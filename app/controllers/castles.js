@@ -2,6 +2,7 @@
 
 const Castle = require("../models/castle");
 const User = require("../models/user");
+const ImageStore = require('../utils/image-store');
 
 const Castles = {
   home: {
@@ -35,14 +36,96 @@ const Castles = {
 
   viewCastle: {
     handler: async function (request, h) {
-      const id = request.params._id;
-      const castle = await Castle.findById(id).lean();
-      return h.view( "viewcastle", {
-         title: castle.name,
-         description: castle.description,
-     });
-    },
-  }
+      try {
+        const id = request.params._id;
+        const castle = await Castle.findById(id);
+        console.log("viewing: ", castle.name);
+        var castleImages = {};
+        if (castle.images.length > 0){ 
+          castleImages = await ImageStore.getImagesByIds(castle.images);
+        }
+        console.log(castleImages);
+        return h.view( "viewcastle", {
+           castleid: castle._id,
+           title: castle.name,
+           description: castle.description,
+           images: castleImages
+       });
+      } catch (err) {
+      console.log(err);
+      }
+    }
+  },
 
+
+  uploadFile: {
+    handler: async function(request, h) {
+      try {
+        const castle = await Castle.findById(request.params.castleid);
+        const file = request.payload.imagefile;
+        var castleImages = {};
+        if (castle.images.length > 0){ 
+          castleImages = await ImageStore.getImagesByIds(castle.images);
+        }
+        if (Object.keys(file).length > 0) {
+          const image_id = await ImageStore.uploadImage(request.payload.imagefile, castle._id);
+          console.log(image_id);          
+          castle.images.push(image_id); 
+          await castle.save();
+          var castleImages = {};
+          if (castle.images.length > 0){ 
+            castleImages = await ImageStore.getImagesByIds(castle.images);
+          }
+          return h.redirect("/viewcastle/"+castle._id, {
+            castleid: castle._id,
+            title: castle.name,
+            description: castle.description,
+            images: castleImages,      
+          });
+        }
+        return h.redirect("/viewcastle/"+castle._id, {
+          castleid: castle._id,
+          title: castle.name,
+          description: castle.description,
+          images: castleImages,
+          error: 'No file selected'  
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    payload: {
+      multipart: true,
+      output: 'data',
+      maxBytes: 209715200,
+      parse: true
+    }
+  },
+
+  deleteImage: {
+    handler: async function(request, h) {
+      try {
+        await ImageStore.deleteImage(request.params.id);
+        const castle = await Castle.findByImageId(request.params.id);
+        const index = await castle.images.indexOf(request.params.id);
+        await castle.images.splice(index, 1); 
+        await castle.save();
+        var castleImages = {};
+        if (castle.images.length > 0){ 
+          castleImages = await ImageStore.getImagesByIds(castle.images);
+        }
+        return h.redirect("/viewcastle/"+castle._id, {
+          castleid: castle._id,
+          title: castle.name,
+          description: castle.description,
+          images: castleImages  
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
 };
+
+
   module.exports = Castles;

@@ -10,6 +10,11 @@ const castleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  images: []
 });
+
+castleSchema.statics.findByImageId = function(imageId) {
+  return this.findOne({ images: { "$all": imageId} })
+};
 
 module.exports = Mongoose.model("Castle", castleSchema);
