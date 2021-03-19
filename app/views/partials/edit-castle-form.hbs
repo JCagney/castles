@@ -1,0 +1,18 @@
+<form action="/editcastle/{{castleid}}" method="POST">
+  <div class="uk-margin">
+    <div class="uk-inline uk-width-1-1">
+      <span class="uk-form-icon" uk-icon="icon: user"></span>
+      <input class="uk-input uk-form-large" type="text" name="name" value="{{castlename}}">
+    </div>
+  </div>
+  <div class="uk-margin">
+    <div class="uk-inline uk-width-1-1">
+      <span class="uk-form-icon" uk-icon="icon: user"></span>
+      <textarea class="uk-textarea" rows="6" placeholder="Description" name="description">{{description}}</textarea>
+    </div>
+  </div>
+  <div class="uk-margin">
+    <button class="uk-button uk-button-primary uk-button-large uk-width-1-1">Save </button>
+  </div>
+</form>
+{{> error }}

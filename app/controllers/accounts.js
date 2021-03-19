@@ -67,6 +67,7 @@ const Accounts = {
       return h.view('login', { title: 'Login to Castles' });
     }
   },
+  
   login: {
     auth: false,
     validate: {

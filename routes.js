@@ -16,6 +16,10 @@ module.exports = [
     { method: 'POST', path: '/uploadfile/{castleid}', config: Castles.uploadFile },
     { method: 'GET', path: '/deleteimage/{id}', config: Castles.deleteImage },
     { method: 'POST', path: "/addcastle", config: Castles.addCastle },
+    { method: 'POST', path: "/editcastle/{castleid}", config: Castles.editCastle },
+    { method: 'GET', path: "/deletecastle/{castleid}", config: Castles.deleteCastle },
+    { method: 'GET', path: '/showeditcastle/{castleid}', config: Castles.showEditCastle },
+  
 
     {
         method: 'GET',
