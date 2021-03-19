@@ -4,16 +4,16 @@
       Castles
     </caption>
     <thead>
+      <th>Enter</th>
       <th>Name</th>
       <th>Author</th>
-      <th>Entrance</th>
     </thead>
     <tbody class="uk-text-left">
       {{#each castles}}
       <tr>
+        <td><a href="/viewcastle/{{_id}}" class="uk-card uk-card-small uk-card-hover uk-padding-small"><i class="fas fa-dungeon fa-2x" style="color:rgb(92, 73, 79)" title="Enter {{name}}" pos="bottom" uk-tooltip></i></a></td>
         <td>{{name}}</td>
-        <td> {{author.firstName}} {{author.lastName}} </td>
-        <td><a href="/viewcastle/{{_id}}" class="uk-card uk-card-small uk-card-hover uk-padding-small"><i class="fas fa-dungeon fa-3x" style="color:rgb(92, 73, 79)" title="Enter {{name}}" pos="bottom" uk-tooltip></i></a></td>
+        <td> {{author.firstName}} {{author.lastName}} </td>        
       </tr>
       {{/each}}
     </tbody>
