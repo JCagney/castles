@@ -2,16 +2,33 @@
 
 const Castle = require("../models/castle");
 const User = require("../models/user");
+const Category = require("../models/category");
 const ImageStore = require('../utils/image-store');
 const Joi = require('@hapi/joi');
 
 const Castles = {
   home: {
     handler: async function (request, h) {
-      const castles = await Castle.find().populate("author").lean();
+      const castles = await Castle.find().populate("author").populate("category").lean();
+      const categories = await Category.find().lean();
       return h.view( "home", {
          title: "Castles",
          castles: castles, 
+         categories: categories
+     });
+    },
+  },
+
+  adminHome: {
+    handler: async function (request, h) {
+      const castles = await Castle.find().populate("author").lean();
+      const users = await User.find().lean();
+      const categories = await Category.find().lean();
+      return h.view( "admin-home", {
+         title: "Castles",
+         castles: castles, 
+         users: users,
+         categories: categories
      });
     },
   },
@@ -20,15 +37,18 @@ const Castles = {
     validate: {
       payload: {
         name: Joi.string().required(),
-        description: Joi.string().required()
+        description: Joi.string().required(),
+        category: Joi.string().required()
       },
       options: {
         abortEarly: false,
       },
       failAction: async function (request, h, error) {
         const castles = await Castle.find().populate("author").lean();
+        const categories = await Category.find().lean();
         return h.view("home", {
             castles: castles,
+            categories: categories,
             title: "Edit error",
             errors: error.details,
           })
@@ -44,7 +64,8 @@ const Castles = {
         const newCastle = new Castle({
           name: data.name,
           description: data.description,
-          author: user._id
+          author: user._id,
+          category: data.category
         });
         await newCastle.save();
         return h.redirect("/home");
@@ -58,7 +79,7 @@ const Castles = {
     handler: async function (request, h) {
       try {
         const id = request.params._id;
-        const castle = await Castle.findById(id).populate("author").lean();
+        const castle = await Castle.findById(id).populate("author").populate("category").lean();
         console.log("viewing: ", castle.name);
         var castleImages = {};
         if (castle.images.length > 0){ 
@@ -70,6 +91,7 @@ const Castles = {
            title: castle.name,
            description: castle.description,
            author: castle.author,
+           category: castle.category,
            images: castleImages
        });
       } catch (err) {
@@ -171,12 +193,14 @@ const Castles = {
       try {
         const id = request.auth.credentials.id;
         const user = await User.findById(id).lean();
+        const categories = await Category.find().lean();
         const castle = await Castle.findById(request.params.castleid);
         return h.view("edit-castle", {
           castleid: castle._id,
           castlename: castle.name,
           user: user.firstName,
           description: castle.description,
+          categories: categories
         });
       } catch (err) {
         console.log(err);
@@ -188,20 +212,29 @@ const Castles = {
     validate: {
       payload: {
         name: Joi.string().required(),
-        description: Joi.string().required()
+        description: Joi.string().required(),
+        category: Joi.string().required()
       },
       options: {
         abortEarly: false,
       },
-      failAction: function (request, h, error) {
-        return h
-          .view("edit-castle", {
-            title: "Edit error",
-            errors: error.details,
+      failAction: async function (request, h, error) {
+        const id = request.auth.credentials.id;
+        const user = await User.findById(id).lean();
+        const categories = await Category.find().lean();
+        const castle = await Castle.findById(request.params.castleid);
+        return h.view("edit-castle", {
+          castleid: castle._id,
+          castlename: castle.name,
+          user: user.firstName,
+          description: castle.description,
+          categories: categories,
+          title: "Edit error",
+          errors: error.details,
           })
           .takeover()
           .code(400);
-      },
+        },
     },
     handler: async function(request, h) {
       try {
@@ -209,7 +242,9 @@ const Castles = {
         const id = request.auth.credentials.id;
         const user = await User.findById(id);
         const castle = await Castle.findById(request.params.castleid);
+        const categories = await Category.find().lean();
         castle.name = castleEdit.name;
+        castle.category = castleEdit.category;
         castle.description = castleEdit.description;
         await castle.save();
         var castleImages = {};
@@ -220,13 +255,28 @@ const Castles = {
           castleid: castle._id,
           title: castle.name,
           description: castle.description,
-          images: castleImages  
+          images: castleImages, 
+          categories: categories  
         });
       } catch (err) {
         console.log(err);
       }
     }
-  }
+  },
+
+  deleteCategory: {
+    handler: async function (request, h) {
+      try {
+        const category = await Category.findById(request.params.id);
+        console.log("deleting category");
+        category.remove(); 
+        console.log("Successful deletion");
+        return h.redirect("/adminhome");
+      } catch (err) {
+      console.log(err);
+      }
+    }
+  },
     
 };
 

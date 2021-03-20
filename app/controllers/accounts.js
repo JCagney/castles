@@ -1,5 +1,6 @@
 'use strict';
 const User = require('../models/user');
+const Admin = require('../models/admin');
 const Boom = require("@hapi/boom");
 const Joi = require('@hapi/joi');
 
@@ -42,7 +43,12 @@ const Accounts = {
       try {
         const payload = request.payload;
         let user = await User.findByEmail(payload.email);
+        let admin = await Admin.findByEmail(payload.email);
         if (user) {
+          const message = "Email address is already registered";
+          throw Boom.badData(message);
+        }
+        if (admin) {
           const message = "Email address is already registered";
           throw Boom.badData(message);
         }
@@ -93,9 +99,19 @@ const Accounts = {
       try {
         let user = await User.findByEmail(email);
         if (!user) {
-          const message = "Email address is not registered";
-          throw Boom.unauthorized(message);
-        }
+          try {
+            let admin = await Admin.findByEmail(email);
+            if (!admin) {
+              const message = "Email address is not registered";
+              throw Boom.unauthorized(message);
+            };
+            admin.comparePassword(password);
+            request.cookieAuth.set({ id: admin.id });
+            return h.redirect("/adminhome");
+          } catch (err) {
+            return h.view("login", { errors: [{ message: err.message }] });
+          };
+        };
         user.comparePassword(password);
         request.cookieAuth.set({ id: user.id });
         return h.redirect("/home");
@@ -161,7 +177,21 @@ const Accounts = {
         return h.view("main", { errors: [{ message: err.message }] });
       }
     }
-  }
+  },
+
+  deleteUser: {
+    handler: async function (request, h) {
+      try {
+        const user = await User.findById(request.params.id);
+        console.log("deleting: ", user.firstName, user.lastName);
+        user.remove(); 
+        console.log("Successful deletion"); 
+        return h.redirect("/adminhome");
+      } catch (err) {
+      console.log(err);
+      }
+    }
+  },
 };
 
 module.exports = Accounts;

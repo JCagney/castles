@@ -5,9 +5,8 @@
 
 <div class="uk-margin uk-width-4-5 uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
   <div class="uk-width-expand@m">
-    <h1 class="uk-heading-bullet">{{title}}
-    </h1>
-    <ul class="uk-iconnav uk-margin-left"></ul>
+    <h1 class="uk-heading-bullet">{{title}}</h1>
+    <ul class="uk-iconnav">
       <a  href="/showeditcastle/{{castleid}}">
         <i class="far fa-edit fa-2x" style="color:rgb(92, 73, 79)" title="Edit Castle" pos="bottom" uk-tooltip></i>
       </a>
@@ -15,11 +14,11 @@
         <i class="far fa-trash-alt fa-2x" style="color:rgb(92, 73, 79)" title="Delete Castle" pos="bottom" uk-tooltip></i>
       </a>
     </ul>
-    <p class="title">Author: {{author.firstName}} {{author.lastName}}</p>
+    <p class="title uk-text-muted ">Category: {{category.name}}. {{category.description}}</p>
+    <p class="title uk-text-muted">Author: {{author.firstName}} {{author.lastName}}</p>
     <p>{{description}}</p>
   </div>
   <div class="uk-width-expand@m"></div>
-    <p>{{error}}</p>
     <div class="uk-container uk-padding-small">
       <div class="uk-child-width-1-4@s uk-flex uk-flex-center" uk-grid uk-height-match="target: .uk-card">
         {{#each images}}
@@ -27,6 +26,7 @@
         {{/each}}
       </div>
     </div>
+    <p>{{error}}</p>
     <div class="uk-child-width-expand@m uk-grid-small uk-grid-match" uk-grid>
       <div>
       {{> upload }}
