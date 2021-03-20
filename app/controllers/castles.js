@@ -38,7 +38,8 @@ const Castles = {
       payload: {
         name: Joi.string().required(),
         description: Joi.string().required(),
-        category: Joi.string().required()
+        category: Joi.string().required(),
+        coordinates: Joi.string().required(),
       },
       options: {
         abortEarly: false,
@@ -65,7 +66,8 @@ const Castles = {
           name: data.name,
           description: data.description,
           author: user._id,
-          category: data.category
+          category: data.category, 
+          coordinates: data.coordinates
         });
         await newCastle.save();
         return h.redirect("/home");
@@ -92,7 +94,9 @@ const Castles = {
            description: castle.description,
            author: castle.author,
            category: castle.category,
-           images: castleImages
+           coordinates: castle.coordinates,
+           images: castleImages,
+           castle: castle
        });
       } catch (err) {
       console.log(err);
@@ -200,7 +204,8 @@ const Castles = {
           castlename: castle.name,
           user: user.firstName,
           description: castle.description,
-          categories: categories
+          categories: categories,
+          coordinates: castle.coordinates
         });
       } catch (err) {
         console.log(err);
@@ -213,7 +218,8 @@ const Castles = {
       payload: {
         name: Joi.string().required(),
         description: Joi.string().required(),
-        category: Joi.string().required()
+        category: Joi.string().required(),
+        coordinates: Joi.string().required()
       },
       options: {
         abortEarly: false,
@@ -228,6 +234,7 @@ const Castles = {
           castlename: castle.name,
           user: user.firstName,
           description: castle.description,
+          coordinates: castle.coordinates,
           categories: categories,
           title: "Edit error",
           errors: error.details,
@@ -246,6 +253,7 @@ const Castles = {
         castle.name = castleEdit.name;
         castle.category = castleEdit.category;
         castle.description = castleEdit.description;
+        castle.coordinates = castleEdit.coordinates;
         await castle.save();
         var castleImages = {};
         if (castle.images.length > 0){ 
@@ -271,6 +279,23 @@ const Castles = {
         console.log("deleting category");
         category.remove(); 
         console.log("Successful deletion");
+        return h.redirect("/adminhome");
+      } catch (err) {
+      console.log(err);
+      }
+    }
+  },
+
+  addCategory: {
+    handler: async function (request, h) {
+      try {
+        const data = request.payload;
+        const newCategory = new Category({
+          name: data.name,
+          description: data.description,
+        });
+        await newCategory.save();
+        console.log("Successful addition"); 
         return h.redirect("/adminhome");
       } catch (err) {
       console.log(err);

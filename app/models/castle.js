@@ -6,6 +6,7 @@ const Schema = Mongoose.Schema;
 const castleSchema = new Schema({
   name: String,
   description: String,
+  coordinates: String,
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -14,7 +15,7 @@ const castleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Category",
   },
-  images: []
+  images: [], 
 });
 
 castleSchema.statics.findByImageId = function(imageId) {

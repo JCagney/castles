@@ -14,6 +14,7 @@ module.exports = [
     { method: 'GET', path: "/home", config: Castles.home },
     { method: 'GET', path: "/adminhome", config: Castles.adminHome },
     { method: 'GET', path: "/deleteuser/{id}", config: Accounts.deleteUser },
+    { method: 'POST', path: "/addcategory", config: Castles.addCategory },
     { method: 'GET', path: "/deletecategory/{id}", config: Castles.deleteCategory },
     { method: 'GET', path: '/viewcastle/{_id}', config: Castles.viewCastle },
     { method: 'POST', path: '/uploadfile/{castleid}', config: Castles.uploadFile },
