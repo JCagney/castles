@@ -4,14 +4,14 @@
       Users
     </caption>
     <thead>
-      <th>Delete</th>
       <th>Name</th>
+      <th>Delete</th>
     </thead>
     <tbody class="uk-text-left">
       {{#each users}}
       <tr>       
-        <td><a href="/deleteuser/{{_id}}" class="uk-card uk-card-small uk-card-hover uk-padding-small"><i class="far fa-trash-alt fa-2x" style="color:rgb(92, 73, 79)" title="Delete {{firstName}} {{lastName}}" pos="bottom" uk-tooltip></i></a></td>
         <td> {{firstName}} {{lastName}} </td>        
+        <td><a href="/deleteuser/{{_id}}" class="uk-card uk-card-small uk-card-hover uk-padding-small"><i class="far fa-trash-alt fa-2x" style="color:rgb(92, 73, 79)" title="Delete {{firstName}} {{lastName}}" pos="bottom" uk-tooltip></i></a></td>
       </tr>
       {{/each}}
     </tbody>

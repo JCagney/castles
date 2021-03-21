@@ -1,0 +1,13 @@
+<div class="uk-flex uk-flex-center uk-flex-middle uk-grid-small" uk-grid>
+  {{> title-card title="Caisleáin na hÉireann" subTitle="Admin Category Page"}}
+  {{> admin-menu }}
+</div>
+
+<div class="uk-container uk-margin">
+  <h1 class="uk-heading-bullet">Castles - {{category.name}}</h1>
+  <p class="title uk-text-muted ">{{category.description}}</p>
+  <td><a href="/adminhome" <i class="fas fa-arrow-left fa-2x" style="color:rgb(92, 73, 79)" title="Return to Admin Home" pos="bottom" uk-tooltip></i></a></td>
+  <div class="uk-width-expand@m">     
+    {{>admin-castle-list}} 
+  </div>       
+</div>

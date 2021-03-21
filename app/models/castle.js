@@ -11,6 +11,10 @@ const castleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  lasteditor: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   category: {
     type: Schema.Types.ObjectId,
     ref: "Category",
@@ -18,8 +22,14 @@ const castleSchema = new Schema({
   images: [], 
 });
 
+// find the castle associated with a particular image id 
 castleSchema.statics.findByImageId = function(imageId) {
   return this.findOne({ images: { "$all": imageId} })
+};
+
+// find all the castles within a certain category 
+castleSchema.statics.findByCategory = function(categoryId) {
+  return this.find({ category: { "$all": categoryId} }).populate("author").populate("category").populate("lasteditor").lean();
 };
 
 module.exports = Mongoose.model("Castle", castleSchema);

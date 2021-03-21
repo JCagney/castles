@@ -4,17 +4,18 @@
       Categories
     </caption>
     <thead>
-      <th>Delete</th>
       <th>Category</th>
       <th>Description</th>
+      <th>Delete</th>
+      <th>Open</th>
     </thead>
     <tbody class="uk-text-left">
       {{#each categories}}
       <tr>       
-        <td><a href="/deletecategory/{{_id}}" class="uk-card uk-card-small uk-card-hover uk-padding-small"><i class="far fa-trash-alt fa-2x" style="color:rgb(92, 73, 79)" title="Delete {{name}}" pos="bottom" uk-tooltip></i></a></td>
         <td> {{name}} </td>    
-        <td> {{description}} </td>      
-      </tr>
+        <td> {{description}} </td>   
+        <td><a href="/deletecategory/{{_id}}" class="uk-card uk-card-small uk-card-hover uk-padding-small"><i class="far fa-trash-alt fa-2x" style="color:rgb(92, 73, 79)" title="Delete {{name}} Category" pos="bottom" uk-tooltip></i></a></td>
+        <td><a href="/viewcategory/{{_id}}" class="uk-card uk-card-small uk-card-hover uk-padding-small"><i class="far fa-folder-open fa-2x" style="color:rgb(92, 73, 79)" title="View {{name}}s" pos="bottom" uk-tooltip></i></a></td>
       {{/each}}
     </tbody>
   </table>
