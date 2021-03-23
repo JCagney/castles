@@ -5,32 +5,38 @@
 
 <div class="uk-margin uk-width-4-5 uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
   <div class="uk-width-expand@m">
-    <h1 class="uk-heading-bullet">{{title}}
-    </h1>
-    <ul class="uk-iconnav uk-margin-left"></ul>
-      <a  href="/showeditcastle/{{castleid}}">
-        <i class="far fa-edit fa-2x" style="color:rgb(92, 73, 79)" title="Edit Castle" pos="bottom" uk-tooltip></i>
-      </a>
-      <a href="/deletecastle/{{castleid}}">
-        <i class="far fa-trash-alt fa-2x" style="color:rgb(92, 73, 79)" title="Delete Castle" pos="bottom" uk-tooltip></i>
-      </a>
-    </ul>
-    <p class="title">Author: {{author.firstName}} {{author.lastName}}</p>
-    <p>{{description}}</p>
+    <h1 class="uk-heading-bullet">{{castle.name}}</h1>
+      <ul class="uk-iconnav uk-align-right uk-margin-large-right">
+        <a  href="/showeditcastle/{{castle._id}}">
+          <i class="far fa-edit fa-2x" style="color:rgb(92, 73, 79)" title="Edit Castle" pos="bottom" uk-tooltip></i>
+        </a>
+        <a href="/deletecastle/{{castle._id}}">
+          <i class="far fa-trash-alt fa-2x" style="color:rgb(92, 73, 79)" title="Delete Castle" pos="bottom" uk-tooltip></i>
+        </a>
+      </ul>
+      <p class="title uk-text-muted ">Category: {{castle.category.name}}. {{castle.category.description}}</p>
+      <p class="title uk-text-muted">Author: {{castle.author.firstName}} {{castle.author.lastName}}. <br>Last edited by: {{castle.lasteditor.firstName}} {{castle.lasteditor.lastName}}</p>
+    <div class="uk-child-width-expand uk-flex-center uk-flex-top" uk-grid>
+      <div class="uk-width-1-2@m">
+        <p>{{castle.description}}</p>
+      </div>
+      <div class="uk-width-expand@m uk-padding-large uk-padding-remove-top">
+        <iframe src="https://maps.google.com/maps?q={{castle.coordinates}}&z=15&output=embed" width="380" height="290" frameborder="0" style="border:0"></iframe>
+      </div>     
+    </div>        
   </div>
-  <div class="uk-width-expand@m"></div>
-    <p>{{error}}</p>
-    <div class="uk-container uk-padding-small">
-      <div class="uk-child-width-1-4@s uk-flex uk-flex-center" uk-grid uk-height-match="target: .uk-card">
-        {{#each images}}
-        {{> card }}
-        {{/each}}
-      </div>
+  <div class="uk-container uk-padding-small">
+    <p class="title uk-text-muted uk-text-center">User Gallery</p>
+    <div class="uk-child-width-1-4@s uk-flex uk-flex-center" uk-grid uk-height-match="target: .uk-card">
+      {{#each images}}
+      {{> card }}
+      {{/each}}
     </div>
-    <div class="uk-child-width-expand@m uk-grid-small uk-grid-match" uk-grid>
-      <div>
+  </div>
+  <p>{{error}}</p>
+  <div class="uk-child-width-expand@m uk-grid-small uk-grid-match" uk-grid>
+    <div>
       {{> upload }}
-      </div>
     </div>
-  </div>  
+  </div>
 </div>

@@ -1,5 +1,6 @@
 <div class="uk-margin uk-width-expand uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
   <form class="uk-form-stacked uk-text-left" action="/addcastle" method="POST">
+    <legend>Add a Castle</legend><br>
     <div class="uk-grid uk-grid-stack">
       <div class="uk-width-1-1@m">
         <div class="uk-margin">
@@ -12,7 +13,23 @@
          <label class="uk-form-label" for="form-stacked-text">Enter castle description</label>
           <div class="uk-margin">
             <textarea class="uk-textarea" rows="6" placeholder="Description" name="description"></textarea>
+          </div>
         </div>
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-stacked-text">Enter castle coordinates</label>
+          <div class="uk-margin">
+            <input class="uk-input" id="form-stacked-text" type="text" name="coordinates" placeholder="Coordinates" />
+          </div>
+        </div>
+        <div class="uk-margin">
+          <div class="uk-button uk-form-select" data-uk-form-select>
+            <span>Choose a Category</span>
+            <select name="category">
+              {{#each categories}}
+                <option value="{{_id}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
         </div>
         <div class="uk-margin">
           <button class="submit uk-button uk-button-primary uk-button-large uk-width-1-1">Add Castle</button>

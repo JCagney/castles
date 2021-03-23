@@ -1,7 +1,6 @@
-<div class="uk-card uk-card-primary uk-card-body uk-text-center">
-  <h3 class="uk-card-title">Image Upload</h3>
-  <form class="uk-form-horizontal" action="/uploadfile/{{castleid}}" method="POST" enctype="multipart/form-data">    
-    <input type="file" class="uk-input" name="imagefile" accept="image/png, image/jpeg">
-    <p><input type="submit" value="Upload" class="uk-button uk-button-default"></p>
+<div class="uk-card uk-card-primary uk-card-body uk-text-center uk-width-1-2 uk-align-center">
+  <form class="uk-form" action="/uploadfile/{{castle._id}}" method="POST" enctype="multipart/form-data">    
+    <input type="file" class="uk-input" name="imagefile" accept="image/png, image/jpeg"> 
+    <p><input type="submit" value="Upload Image" class="uk-button uk-button-default"></p>
   </form>
 </div>

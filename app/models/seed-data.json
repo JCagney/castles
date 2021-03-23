@@ -1,0 +1,35 @@
+{
+    "admins": {
+      "_model": "Admin",
+      "John": {
+        "firstName": "John",
+        "lastName": "Cagney",
+        "email": "john@cagney.com",
+        "password": "secret"
+      }
+    },
+    "categories": {
+        "_model": "Category",
+        "Ruin": {
+          "name": "Ruin",
+          "description": "A ruined castle, external viewing only"
+        },
+        "Commerical": {
+            "name": "Commerical",
+            "description": "A castle in commerical use, eg hotel"
+          },
+        "OPW Heritage Site": {
+            "name": "OPW Heritage Site",
+            "description": "A National Heritage Site under care of the Office of Public Works"
+          },
+        "Private": {
+            "name": "Private",
+            "description": "A castle in private ownership, residential or other"
+          },
+        "Administrative": {
+            "name": "Administrative",
+            "description": "A castle used by the State for administrative purposes"
+          }
+
+      }
+}
