@@ -1,0 +1,25 @@
+<div class="uk-margin uk-width-expand uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
+  <table class="uk-table">
+    <caption>
+      Castles
+    </caption>
+    <thead>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Author</th>
+      <th>Last Editor</th>
+      <th>Delete</th>
+    </thead>
+    <tbody class="uk-text-left">
+      {{#each castles}}
+      <tr>
+        <td>{{name}}</td>
+        <td>{{category.name}}</td>
+        <td>{{author.firstName}} {{author.lastName}} </td>   
+        <td>{{lasteditor.firstName}} {{lasteditor.lastName}}</td>   
+        <td><a href="/admindeletecastle/{{_id}}"><i class="far fa-trash-alt fa-2x" style="color:rgb(92, 73, 79)" title="Delete Castle" pos="bottom" uk-tooltip></i></a></td>  
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

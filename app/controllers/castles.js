@@ -81,20 +81,15 @@ const Castles = {
     handler: async function (request, h) {
       try {
         const id = request.params._id;
-        const castle = await Castle.findById(id).populate("author").populate("category").lean();
+        const castle = await Castle.findById(id).populate("author").populate("category").populate("lasteditor").lean();
         console.log("viewing: ", castle.name);
         var castleImages = {};
         if (castle.images.length > 0){ 
           castleImages = await ImageStore.getImagesByIds(castle.images);
         }
-        console.log(castleImages);
+        console.log("viewing ", castle.name);
         return h.view( "viewcastle", {
-           castleid: castle._id,
            title: castle.name,
-           description: castle.description,
-           author: castle.author,
-           category: castle.category,
-           coordinates: castle.coordinates,
            images: castleImages,
            castle: castle
        });
@@ -123,18 +118,9 @@ const Castles = {
           if (castle.images.length > 0){ 
             castleImages = await ImageStore.getImagesByIds(castle.images);
           }
-          return h.redirect("/viewcastle/"+castle._id, {
-            castleid: castle._id,
-            title: castle.name,
-            description: castle.description,
-            images: castleImages,      
-          });
+          return h.redirect("/viewcastle/"+castle._id);
         }
         return h.redirect("/viewcastle/"+castle._id, {
-          castleid: castle._id,
-          title: castle.name,
-          description: castle.description,
-          images: castleImages,
           error: 'No file selected'  
         });
       } catch (err) {
@@ -161,12 +147,7 @@ const Castles = {
         if (castle.images.length > 0){ 
           castleImages = await ImageStore.getImagesByIds(castle.images);
         }
-        return h.redirect("/viewcastle/"+castle._id, {
-          castleid: castle._id,
-          title: castle.name,
-          description: castle.description,
-          images: castleImages  
-        });
+        return h.redirect("/viewcastle/"+castle._id);
       } catch (err) {
         console.log(err);
       }
@@ -200,6 +181,7 @@ const Castles = {
         const categories = await Category.find().lean();
         const castle = await Castle.findById(request.params.castleid);
         return h.view("edit-castle", {
+          title: castle.name,
           castleid: castle._id,
           castlename: castle.name,
           user: user.firstName,
@@ -230,6 +212,7 @@ const Castles = {
         const categories = await Category.find().lean();
         const castle = await Castle.findById(request.params.castleid);
         return h.view("edit-castle", {
+          title: castle.name,
           castleid: castle._id,
           castlename: castle.name,
           user: user.firstName,
@@ -254,6 +237,7 @@ const Castles = {
         castle.category = castleEdit.category;
         castle.description = castleEdit.description;
         castle.coordinates = castleEdit.coordinates;
+        castle.lasteditor = user;
         await castle.save();
         var castleImages = {};
         if (castle.images.length > 0){ 
@@ -277,7 +261,7 @@ const Castles = {
       try {
         const category = await Category.findById(request.params.id);
         console.log("deleting category");
-        category.remove(); 
+        await category.remove(); 
         console.log("Successful deletion");
         return h.redirect("/adminhome");
       } catch (err) {
@@ -303,6 +287,41 @@ const Castles = {
     }
   },
     
+  viewCategory: {
+    handler: async function (request, h) {
+      try {
+        const category = await Category.findById(request.params.id).lean();
+        const castles = await Castle.findByCategory(category._id);
+        console.log("viewing ", category.name);
+        return h.view("category", {
+          category: category,
+          castles: castles
+        });
+      } catch (err) {
+      console.log(err);
+      }
+    }
+  },
+
+  adminDeleteCastle: {
+    handler: async function (request, h) {
+      try {
+        const castle = await Castle.findById(request.params.id).populate("category");
+        const category = castle.category;
+        console.log("deleting: ", castle.name);
+        if (castle.images.length > 0){ 
+          for (var i = 0; i < castle.images.length; i++) {
+             await ImageStore.deleteImage(castle.images[i]);
+          };
+        };
+        castle.remove(); 
+        console.log("Successful deletion"); 
+        return h.redirect("/adminhome");
+      } catch (err) {
+      console.log(err);
+      }
+    }
+  },
 };
 
 
