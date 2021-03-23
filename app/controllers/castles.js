@@ -4,6 +4,7 @@ const Castle = require("../models/castle");
 const User = require("../models/user");
 const Category = require("../models/category");
 const ImageStore = require('../utils/image-store');
+const Weather = require('../utils/weather');
 const Joi = require('@hapi/joi');
 
 const Castles = {
@@ -87,11 +88,13 @@ const Castles = {
         if (castle.images.length > 0){ 
           castleImages = await ImageStore.getImagesByIds(castle.images);
         }
+        const weather = await Weather.fetchWeather(castle.coordinates);
         console.log("viewing ", castle.name);
         return h.view( "viewcastle", {
            title: castle.name,
            images: castleImages,
-           castle: castle
+           castle: castle, 
+           weather: weather
        });
       } catch (err) {
       console.log(err);
