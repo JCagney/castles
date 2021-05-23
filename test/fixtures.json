@@ -1,5 +1,5 @@
 {
-    "castleService": "http://localhost:3000",
+    "castleService": "http://localhost:4000",
 
     "users": [
         {
@@ -26,14 +26,12 @@
       {  
         "name": "Jigginstown Castle",
         "description": "Built for Black Tom Strafford, Lord Lieutenant of Ireland. The castle was never finished.",
-        "category": "6057aa55daf2c92c78d71bff",
         "coordinates": "53.21370059174528, -6.681901891139976"
       },
 
       {  
         "name": "Carlow Castle",
         "description": "The ruins of a medieval castle & military stronghold featuring 2 towers, a wall & gardens.",
-        "category": "6057aa55daf2c92c78d71bff",
         "coordinates": "52.836199664388076, -6.935918826670611"
       }
 
@@ -83,8 +81,17 @@
       {  
         "name": "Brize Castle",
         "description": "It was built by Gerald Mc Maurice, the younger son of Maurice de Prenderghast, who accompanied Richard Strongbow in the Anglo/Norman invasion of Ireland in 1169 and was rewarded with lands in Ireland in Waterford, Wexford, Tipperary, Mayo and Wicklow.",
-        "category": "6057aa55daf2c92c78d71bff",
         "coordinates": "53.777414580025095, -9.071724255558662"
+      
+      }, 
+
+      "editCastle": 
+      
+      {  
+        "name": "The Brize Castle",
+        "description": "It was DEFINITELY built by Gerald Mc Maurice, the younger son of Maurice de Prenderghast, who accompanied Richard Strongbow in the Anglo/Norman invasion of Ireland in 1169 and was rewarded with lands in Ireland in Waterford, Wexford, Tipperary, Mayo and Wicklow.",
+        "coordinates": "53.777414580025100, -9.071724255558662"
+      
       }, 
 
       "newUser": {

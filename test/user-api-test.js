@@ -11,17 +11,23 @@ suite("User API tests", function () {
 
   const castleService = new CastleService(fixtures.castleService);
 
-  setup(async function () {
+  suiteSetup(async function () {
     await castleService.deleteAllUsers();
+    const returnedUser = await castleService.createUser(newUser);
+    const response = await castleService.authenticate(newUser);
   });
 
-  teardown(async function () {
+  suiteTeardown(async function () {
     await castleService.deleteAllUsers();
+    castleService.clearAuth();
   });
+
 
   test("create a user", async function () {
     const returnedUser = await castleService.createUser(newUser);
-    assert(_.some([returnedUser], newUser), "returnedUser must be a superset of newUser");
+    assert.equal(returnedUser.firstName, newUser.firstName);
+    assert.equal(returnedUser.lastName, newUser.lastName);
+    assert.equal(returnedUser.email, newUser.email);
     assert.isDefined(returnedUser._id);
   });
 
@@ -47,27 +53,46 @@ suite("User API tests", function () {
   });
 
   test("get all users", async function () {
+    await castleService.deleteAllUsers();
+    await castleService.createUser(newUser);
+    await castleService.authenticate(newUser);
     for (let u of users) {
       await castleService.createUser(u);
     }
 
     const allUsers = await castleService.getUsers();
-    assert.equal(allUsers.length, users.length);
+    assert.equal(allUsers.length, users.length + 1);
   });
 
   test("get users detail", async function () {
+    await castleService.deleteAllUsers();
+    const user = await castleService.createUser(newUser);
+    await castleService.authenticate(newUser);
     for (let u of users) {
       await castleService.createUser(u);
     }
 
+    const testUser = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+    };
+    users.unshift(testUser);
+
     const allUsers = await castleService.getUsers();
     for (var i = 0; i < users.length; i++) {
-      assert(_.some([allUsers[i]], users[i]), "returnedUser must be a superset of newUser");
+      assert.equal(allUsers[i].firstName, users[i].firstName);
+      assert.equal(allUsers[i].lastName, users[i].lastName);
+      assert.equal(allUsers[i].email, users[i].email);
     }
   });
 
   test("get all users empty", async function () {
+    await castleService.deleteAllUsers();
+    const user = await castleService.createUser(newUser);
+    await castleService.authenticate(newUser);
     const allUsers = await castleService.getUsers();
-    assert.equal(allUsers.length, 0);
+    assert.equal(allUsers.length, 1);
   });
 });

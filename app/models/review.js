@@ -5,6 +5,7 @@ const Schema = Mongoose.Schema;
 
 const reviewSchema = new Schema({
   text: String,
+  date: String,
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",

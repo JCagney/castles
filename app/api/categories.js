@@ -5,7 +5,16 @@ const Boom = require("@hapi/boom");
 
 const Categories = {
     find: {
-      auth: false,
+      auth: {
+        strategy: "jwt",
+      },
+      plugins: {
+        disinfect: {
+          deleteEmpty: true,
+          deleteWhitespace: true,
+          disinfectPayload: true 
+        }
+      },
       handler: async function (request, h) {
         const category = await Category.find();
         return category;
@@ -13,7 +22,16 @@ const Categories = {
     },
 
     findOne: {
-      auth: false,
+      auth: {
+        strategy: "jwt",
+      },
+      plugins: {
+        disinfect: {
+          deleteEmpty: true,
+          deleteWhitespace: true,
+          disinfectPayload: true 
+        }
+      },
       handler: async function(request, h) {
         try {  
           const category = await Category.findOne({ _id: request.params.id });
@@ -28,7 +46,16 @@ const Categories = {
     },
 
     create: {
-        auth: false,
+      auth: {
+        strategy: "jwt",
+      },
+        plugins: {
+          disinfect: {
+            deleteEmpty: true,
+            deleteWhitespace: true,
+            disinfectPayload: true 
+          }
+        },
         handler: async function (request, h) {
           const newCategory = new Category(request.payload);
           const category = await newCategory.save();
@@ -40,7 +67,16 @@ const Categories = {
       },
     
       deleteAll: {
-        auth: false,
+        auth: {
+          strategy: "jwt",
+        },
+        plugins: {
+          disinfect: {
+            deleteEmpty: true,
+            deleteWhitespace: true,
+            disinfectPayload: true 
+          }
+        },
         handler: async function (request, h) {
           await Category.remove({});
           return { success: true };
@@ -48,7 +84,16 @@ const Categories = {
       },
     
       deleteOne: {
-        auth: false,
+        auth: {
+          strategy: "jwt",
+        },
+        plugins: {
+          disinfect: {
+            deleteEmpty: true,
+            deleteWhitespace: true,
+            disinfectPayload: true 
+          }
+        },
         handler: async function (request, h) {
           const response = await Category.deleteOne({ _id: request.params.id });
           if (response.deletedCount == 1) {

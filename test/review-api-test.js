@@ -12,6 +12,17 @@ suite("Review API tests", function () {
     let newReview = fixtures.newReview; 
 
     const castleService = new CastleService(fixtures.castleService);
+    
+    suiteSetup(async function () {
+      await castleService.deleteAllUsers();
+      const returnedUser = await castleService.createUser(newUser);
+      const response = await castleService.authenticate(newUser);
+    });
+  
+    suiteTeardown(async function () {
+      await castleService.deleteAllUsers();
+      castleService.clearAuth();
+    });
 
     setup(async function () {
         await castleService.deleteAllReviews();
@@ -19,16 +30,10 @@ suite("Review API tests", function () {
     
       teardown(async function () {
         await castleService.deleteAllReviews();
-        await castleService.deleteAllUsers();
-        await castleService.deleteAllCastles();
       });
       
       test("create a review", async function () {
-        const user = await castleService.createUser(newUser);
-        const castle = await castleService.createCastle(newCastle);
         let review = newReview; 
-        review.author = user._id; 
-        review.castle = castle._id; 
         const returnedReview = await castleService.createReview(review); 
         assert(_.some([returnedReview], review), "returnedReview must be a superset of review")
       });

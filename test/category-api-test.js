@@ -9,7 +9,8 @@ suite("Category API tests", function () {
   //let categories = fixtures.categories;
   //let newCategory = fixtures.newCategory;
 
-  const castleService = new CastleService("http://localhost:3000");
+  const castleService = new CastleService(fixtures.castleService);
+  let newUser = fixtures.newUser;
 
   //setup(async function () {
   //  await castleService.deleteAllCategories();
@@ -18,6 +19,16 @@ suite("Category API tests", function () {
   //teardown(async function () {
   //  await castleService.deleteAllCategories();
   //});
+  suiteSetup(async function () {
+    await castleService.deleteAllUsers();
+    const returnedUser = await castleService.createUser(newUser);
+    const response = await castleService.authenticate(newUser);
+  });
+
+  suiteTeardown(async function () {
+    await castleService.deleteAllUsers();
+    castleService.clearAuth();
+  });
 
   test("get all categries", async function () {
     const allCategories = await castleService.getCategories();

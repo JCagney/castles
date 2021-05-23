@@ -26,6 +26,19 @@ class CastleService {
     return response.data;
   }
 
+  async editCastle(id, editCastle) {
+    const edit = {
+      id: id,
+      name: editCastle.name,
+      description: editCastle.description,
+      coordinates: editCastle.coordinates,  
+      category: editCastle.category,
+      userid: editCastle.user
+    };
+    const response = await axios.post(this.baseUrl + "/api/castle/edit", edit);
+    return response.data;
+  }
+
   async deleteAllCastles() {
     const response = await axios.delete(this.baseUrl + "/api/castles");
     return response.data;
@@ -85,7 +98,7 @@ class CastleService {
 
   async getCategory(id) {
     try {
-      const response = await axios.get(this.baseUrl + "/api/category/" + id);
+      const response = await axios.get(this.baseUrl + "/api/categories/" + id);
       return response.data;
     } catch (e) {
       return null;
@@ -134,6 +147,20 @@ class CastleService {
   async deleteOneReview(id) {
     const response = await axios.delete(this.baseUrl + "/api/review/" + id);
     return response.data;
+  }
+
+  async authenticate(user) {
+    try {
+      const response = await axios.post(this.baseUrl + "/api/users/authenticate", user);
+      axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.token;
+      return response.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async clearAuth() {
+    axios.defaults.headers.common["Authorization"] = "";
   }
 }
 

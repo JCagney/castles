@@ -2,10 +2,22 @@
 
 const User = require("../models/user");
 const Boom = require("@hapi/boom");
+const bcrypt = require('bcrypt'); 
+const utils = require('./utils.js');
+const saltRounds = 10; 
 
 const Users = {
   find: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function (request, h) {
       const users = await User.find();
       return users;
@@ -13,7 +25,16 @@ const Users = {
   },
 
   findOne: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function (request, h) {
       try {
         const user = await User.findOne({ _id: request.params.id });
@@ -29,8 +50,21 @@ const Users = {
 
   create: {
     auth: false,
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function (request, h) {
-      const newUser = new User(request.payload);
+      const hash = await bcrypt.hash(request.payload.password, saltRounds); 
+      const newUser = new User({
+        firstName: request.payload.firstName,
+        lastName: request.payload.lastName,
+        email: request.payload.email,
+        password: hash                           
+      });
       const user = await newUser.save();
       if (user) {
         return h.response(user).code(201);
@@ -40,7 +74,16 @@ const Users = {
   },
 
   deleteAll: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function (request, h) {
       await User.deleteMany({});
       return { success: true };
@@ -48,7 +91,16 @@ const Users = {
   },
 
   deleteOne: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function (request, h) {
       const user = await User.deleteOne({ _id: request.params.id });
       if (user) {
@@ -57,6 +109,50 @@ const Users = {
       return Boom.notFound("id not found");
     },
   },
+
+  authenticate: {
+    auth: false,
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
+    handler: async function (request, h) {
+      try {
+        const user = await User.findOne({ email: request.payload.email });
+        if (!user) {
+          return Boom.unauthorized("User not found"); 
+  
+        } else if (await user.comparePassword(request.payload.password)) {
+          const token = utils.createToken(user);
+          return h.response({ success: true, token: token }).code(201);
+        } else { 
+          return Boom.unauthorized("Invalid password");
+        }
+      } catch (err) {
+        return Boom.notFound("internal db failure");
+      }
+    },
+  },
+
+  checkEmail: {
+    auth: false,
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
+    handler: async function (request, h) {
+      console.log(request.payload); 
+      const user = await User.findOne({ email: request.payload.newemail });
+      console.log(user); 
+      return user;
+    } 
+  }
 };
 
 module.exports = Users;

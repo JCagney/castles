@@ -8,8 +8,21 @@ const _ = require("lodash");
 suite("Castle API tests", function () {
   let castles = fixtures.castles;
   let newCastle = fixtures.newCastle;
+  let editCastle = fixtures.editCastle; 
 
-  const castleService = new CastleService("http://localhost:3000");
+  const castleService = new CastleService(fixtures.castleService);
+  let newUser = fixtures.newUser;
+
+  suiteSetup(async function () {
+    await castleService.deleteAllUsers();
+    const returnedUser = await castleService.createUser(newUser);
+    const response = await castleService.authenticate(newUser);
+  });
+
+  suiteTeardown(async function () {
+    await castleService.deleteAllUsers();
+    castleService.clearAuth();
+  });
 
   setup(async function () {
     await castleService.deleteAllCastles();
@@ -23,6 +36,13 @@ suite("Castle API tests", function () {
     const returnedCastle = await castleService.createCastle(newCastle);
     assert(_.some([returnedCastle], newCastle), "returnedCastle must be a superset of newCastle");
     assert.isDefined(returnedCastle._id);
+  });
+
+  test("edit a castle", async function () {
+    const createdCastle = await castleService.createCastle(newCastle);
+    const editedCastle = await castleService.editCastle(createdCastle._id, editCastle);
+    assert(_.some([editedCastle], editCastle), "editedCastle must be a superset of editCastle");
+    assert.isDefined(editedCastle._id);
   });
 
   test("get castle", async function () {

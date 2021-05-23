@@ -3,11 +3,21 @@
 const Review = require("../models/review");
 const Castle = require("../models/castle");
 const Boom = require("@hapi/boom");
+const { now } = require("lodash");
 
 const Reviews = {
     
   find: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function (request, h) {
       const reviews = await Review.find();
       return reviews;
@@ -15,7 +25,16 @@ const Reviews = {
   },
 
   findOne: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function(request, h) {
       try {  
         const review = await Review.findOne({ _id: request.params.id });
@@ -31,16 +50,26 @@ const Reviews = {
     
   
   findByCastle: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function (request, h) {
       try { 
         const castle = await Castle.findOne({ _id: request.params.castleid });
         if (!castle) {
           return Boom.notFound("No Castle with this id");
         }
-        const reviews = Review.findbyCastle(castle._id); 
+        const reviews = Review.findByCastle(castle._id).populate("author").lean(); 
         return reviews;
       } catch (err) {
+        console.log(err);
         return Boom.notFound("No Castle with this id");
       }
     }
@@ -48,9 +77,24 @@ const Reviews = {
 
 
   create: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function (request, h) {
-      const newReview = new Review(request.payload);
+      const date = new Date(Date.now()).toLocaleDateString(); 
+      const newReview = new Review({
+        text: request.payload.text,
+        date: date,
+        author: request.payload.author,
+        castle: request.payload.castle, 
+      });
       const review = await newReview.save();
       if (review) {
         return h.response(review).code(201);
@@ -60,7 +104,16 @@ const Reviews = {
   }, 
 
   deleteAll: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function (request, h) {
       await Review.remove({});
       return { success: true };
@@ -68,7 +121,16 @@ const Reviews = {
   },
 
   deleteOne: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
     handler: async function (request, h) {
       const response = await Review.deleteOne({ _id: request.params.id });
       if (response.deletedCount == 1) {
