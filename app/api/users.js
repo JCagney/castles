@@ -137,6 +137,35 @@ const Users = {
     },
   },
 
+  getUserFromToken:   {
+    auth: {
+      strategy: "jwt",
+    },
+    plugins: {
+      disinfect: {
+        deleteEmpty: true,
+        deleteWhitespace: true,
+        disinfectPayload: true 
+      }
+    },
+    handler: async function (request, h) {
+      const email = utils.getUserEmailFromRequest(request); 
+      const user = await User.findOne({ email: email});
+      console.log(user); 
+      if (user){
+        const info = {
+          firstName: user.firstName, 
+          lastName: user.lastName, 
+          _id: user._id,
+          email: email
+        }
+      return info;
+      } else{
+        return null;
+      }
+    } 
+  },
+
   checkEmail: {
     auth: false,
     plugins: {
@@ -147,10 +176,18 @@ const Users = {
       }
     },
     handler: async function (request, h) {
-      console.log(request.payload); 
-      const user = await User.findOne({ email: request.payload.newemail });
+      const user = await User.findOne({ email: request.params.email });
       console.log(user); 
-      return user;
+      if (user){
+        const info = {
+          firstName: user.firstName, 
+          lastName: user.lastName, 
+          _id: user._id
+        }
+      return info;
+      } else{
+        return null;
+      }
     } 
   }
 };

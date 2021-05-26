@@ -29,15 +29,28 @@ exports.validate = async function (decoded, request) {
   }
 };
 
-exports.getUserIdFromRequest = function (request) {
-  var userId = null;
+exports.getUserEmailFromRequest = function (request) {
+  var email = null;
   try {
     const authorization = request.headers.authorization;
     var token = authorization.split(" ")[1];
     var decodedToken = jwt.verify(token, "secretpasswordnotrevealedtoanyone");
-    userId = decodedToken.id;
+    userId = decodedToken.email;
   } catch (e) {
-    userId = null;
+    email = null;
   }
-  return userId;
+  return email;
 };
+
+exports.getUserIdFromRequest = function (request) {
+    var userId = null;
+    try {
+      const authorization = request.headers.authorization;
+      var token = authorization.split(" ")[1];
+      var decodedToken = jwt.verify(token, "secretpasswordnotrevealedtoanyone");
+      userId = decodedToken.id;
+    } catch (e) {
+      userId = null;
+    }
+    return userId;
+  };
