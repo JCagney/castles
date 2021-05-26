@@ -21,6 +21,7 @@ db.on("disconnected", function() {
 
 db.once("open", function() {
   console.log(`database connected to ${this.name} on ${this.host}`);
+  //seed()
 });
 
 async function seed() {
@@ -28,6 +29,7 @@ async function seed() {
   const data = require('./seed-data.json');
   const Admin = require('./admin');
   const Category = require('./category');
+  const User = require('./user');
   const dbData = await seeder.seed(data, { dropDatabase: false, dropCollections: false });
   console.log(dbData);
 };

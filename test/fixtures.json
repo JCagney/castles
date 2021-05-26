@@ -1,0 +1,111 @@
+{
+    "castleService": "http://localhost:4000",
+
+    "users": [
+        {
+          "firstName": "Homer",
+          "lastName": "Simpson",
+          "email": "homer@simpson.com",
+          "password": "secret"
+        },
+        {
+          "firstName": "Marge",
+          "lastName": "Simpson",
+          "email": "marge@simpson.com",
+          "password": "secret"
+        },
+        {
+          "firstName": "Bart",
+          "lastName": "Simpson",
+          "email": "bart@simpson.com",
+          "password": "secret"
+        }
+      ],
+    
+    "castles": [
+      {  
+        "name": "Jigginstown Castle",
+        "description": "Built for Black Tom Strafford, Lord Lieutenant of Ireland. The castle was never finished.",
+        "coordinates": "53.21370059174528, -6.681901891139976"
+      },
+
+      {  
+        "name": "Carlow Castle",
+        "description": "The ruins of a medieval castle & military stronghold featuring 2 towers, a wall & gardens.",
+        "coordinates": "52.836199664388076, -6.935918826670611"
+      }
+
+    ],
+
+    "categories": [
+        {
+          "name": "Ruin",
+          "description": "A ruined castle, external viewing only"
+        },
+        {
+            "name": "Commerical",
+            "description": "A castle in commerical use, eg hotel"
+        },
+        {
+            "name": "OPW Heritage Site",
+            "description": "A National Heritage Site under care of the Office of Public Works"
+        },
+        {
+            "name": "Private",
+            "description": "A castle in private ownership, residential or other"
+        },
+        {
+            "name": "Administrative",
+            "description": "A castle used by the State for administrative purposes"
+        }
+
+    ],
+
+    "reviews": [
+        {
+            "text": "It's great right now if you like scaffolding."
+        },
+        {
+            "text": "Lovely place, nice sea view"
+        },
+        {
+            "text": "The Castle is well preserved and worth a quick visit."
+        }
+
+    ],
+
+
+
+    "newCastle": 
+      
+      {  
+        "name": "Brize Castle",
+        "description": "It was built by Gerald Mc Maurice, the younger son of Maurice de Prenderghast, who accompanied Richard Strongbow in the Anglo/Norman invasion of Ireland in 1169 and was rewarded with lands in Ireland in Waterford, Wexford, Tipperary, Mayo and Wicklow.",
+        "coordinates": "53.777414580025095, -9.071724255558662"
+      
+      }, 
+
+      "editCastle": 
+      
+      {  
+        "name": "The Brize Castle",
+        "description": "It was DEFINITELY built by Gerald Mc Maurice, the younger son of Maurice de Prenderghast, who accompanied Richard Strongbow in the Anglo/Norman invasion of Ireland in 1169 and was rewarded with lands in Ireland in Waterford, Wexford, Tipperary, Mayo and Wicklow.",
+        "coordinates": "53.777414580025100, -9.071724255558662"
+      
+      }, 
+
+      "newUser": {
+        "firstName": "Maggie",
+        "lastName": "Simpson",
+        "email": "maggie@simpson.com",
+        "password": "secret"
+      }, 
+
+      "newReview": {
+          "text": "There is NO Castle just a pile of stones" 
+
+      }
+
+}
+
+

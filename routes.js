@@ -1,6 +1,7 @@
 const Accounts = require("./app/controllers/accounts");
 const Castles = require('./app/controllers/castles');
 
+
 module.exports = [
 
     { method: "GET", path: "/", config: Accounts.index },

@@ -8,6 +8,24 @@
         "password": "secret"
       }
     },
+
+    "users": {
+      "_model": "User", 
+      "Grace": {
+        "firstname": "Grace", 
+        "lastname": "O'Malley", 
+        "email": "grace@omalley.com",
+        "password": "secret"
+      }, 
+      "Strongbow": {
+        "firstname": "Richard", 
+        "lastname": "deClare", 
+        "email": "richard@strongbow.com",
+        "password": "secret"
+      }
+
+    },
+
     "categories": {
         "_model": "Category",
         "Ruin": {
